@@ -27,7 +27,7 @@ tasks:
   compile:
     desc: Compile typescript files
     cmds:
-      - tsc
+      - pnpm run build 
 
   clean:
     desc: Clean artifacts and dependencies
