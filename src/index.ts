@@ -1,14 +1,10 @@
 import express from "express";
-import cors from "cors";
-import { fetchSlackUserRoute, fetchSlackUserStatusRoute } from "./slackUser";
+import authenticationRoutes from "./authentication/routes/authenticationRouter";
+import eventsRoutes from "./events/routes/eventRoutes"
 
-const app = express();
-app.use(cors());
+const router = express.Router();
 
-app.get("/slack/user", fetchSlackUserRoute);
-app.get("/slack/user/status", fetchSlackUserStatusRoute);
+router.use('', authenticationRoutes)
+router.use('/events', eventsRoutes)
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+export default router

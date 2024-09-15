@@ -1,7 +1,5 @@
 import { WebClient, ErrorCode } from "@slack/web-api";
-import { Request, Response } from "express";
 
-const slackClient = new WebClient(process.env.SLACK_BOT_TOKEN);
 
 interface FetchSlackUserParams {
     userId?: string;
@@ -23,6 +21,8 @@ export async function fetchSlackUser({
     userName,
 }: FetchSlackUserParams): Promise<SlackUserProfile | null> {
     try {
+        const slackClient = new WebClient(process.env.SLACK_BOT_TOKEN);
+
         let userInfo;
 
         if (userId) {
@@ -59,55 +59,3 @@ export async function fetchSlackUser({
         throw error;
     }
 }
-
-export const fetchSlackUserRoute = async (req: Request, res: Response) => {
-    const userId = req.query.userId as string | undefined;
-    const email = req.query.userEmail as string | undefined;
-    const userName = req.query.userName as string | undefined;
-
-    if (!userId && !email && !userName) {
-        res.status(400).send(
-            "At least one of userId, userEmail, or userName must be provided"
-        );
-        return;
-    }
-
-    try {
-        const user = await fetchSlackUser({ userId, email, userName });
-
-        if (!user) {
-            res.status(404).send("User not found");
-            return;
-        }
-
-        res.send(user);
-    } catch (error) {
-        console.error(`Something went wrong: ${error}`);
-        res.status(500).send("Internal Server Error");
-    }
-};
-
-export const fetchSlackUserStatusRoute = async (
-    req: Request,
-    res: Response
-) => {
-    const email = req.query.userEmail as string | undefined;
-
-    if (!email) {
-        res.status(400).send("userEmail must be provided");
-        return;
-    }
-
-    try {
-        const user = await fetchSlackUser({ email });
-
-        if (!user) {
-            return res.json({ isActive: false });
-        }
-        console.log(`User: ${user.first_name} exists in slack`);
-        res.json({ isActive: true });
-    } catch (error) {
-        console.error(`Something went wrong: ${error}`);
-        res.status(500).send("Internal Server Error");
-    }
-};
