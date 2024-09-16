@@ -36,6 +36,22 @@ Xplorers API is the backend service for the Xplorers website and other related t
 -   [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli)
 -   [Google Cloud CLI](https://cloud.google.com/sdk/docs/install)
 
+## ❗️ [macOS Installation gCloud] 
+In order for **gcloud** to be acessible globally, extract google-cloud-sdk into Home Directory
+
+1. Navite to downloads folder or where google-cloud-cli is installed
+    ```
+    cd ~/Downloads
+    ```
+2. Extract and move (.tar.gz) file into `$home` path.
+    ```
+    tar -xzvf filename.tar.gz -C ~
+    ```
+3. Run the `install.sh` command
+    ```
+    cd ~/google-cloud-sdk  && ./install.sh
+    ```
+
 ### Access to Google Cloud Platform
 
 You will need access to the Google Cloud Platform to deploy the Xplorers API. If you don't have access, please contact the project owner.
