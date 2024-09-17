@@ -37,19 +37,31 @@ Xplorers API is the backend service for the Xplorers website and other related t
 -   [Google Cloud CLI](https://cloud.google.com/sdk/docs/install)
 
 ## ❗️ [macOS Installation gCloud] 
-In order for **gcloud** to be acessible globally, extract google-cloud-sdk into Home Directory
+In order for **gcloud** command to be acessible globally, extract google-cloud-sdk into Home Directory. 
 
 1. Navite to downloads folder or where google-cloud-cli is installed
-    ```
+    ```bash
     cd ~/Downloads
     ```
 2. Extract and move (.tar.gz) file into `$home` path.
-    ```
-    tar -xzvf filename.tar.gz -C ~
+    ```bash
+    tar -xzvf filename.tar.gz -C $HOME
     ```
 3. Run the `install.sh` command
-    ```
+    ```bash
     cd ~/google-cloud-sdk  && ./install.sh
+    ```
+
+4. Initialize the SDK
+
+    ```bash
+    $HOME/google-cloud-sdk/bin/gcloud init
+    ```
+
+5. Clean up the downloaded archive and any temporary files
+
+    ```bash
+    rm ~/Downloads/google-cloud-sdk-*.tar.gz
     ```
 
 ### Access to Google Cloud Platform
