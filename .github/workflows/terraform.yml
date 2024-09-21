@@ -1,0 +1,92 @@
+name: 'Terraform'
+on:
+  push:
+    paths:
+      - '**.tf'
+      - '**.hcl'
+      - '**.tpl'
+  pull_request:
+    paths:
+      - '**.tf'
+      - '**.hcl'
+      - '**.tpl'
+
+permissions:
+  contents: read
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - name: Install dependencies
+        run: pnpm install
+
+      - uses: 'google-github-actions/auth@v2'
+        with:
+          project_id: 'my-project'
+          workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
+      
+
+    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+      - name: Install Terraform  
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.1.7"
+
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    # Checks that all Terraform configuration files adhere to a canonical format
+      
+      # Generates an execution plan for Terraform
+      - name: Terraform Plan
+        id: plan
+        if: github.event_name == 'pull_request'
+        run: task terrafrom-plan
+        continue-on-error: true
+
+      - name: Update Pull Request
+        uses: actions/github-script@v6
+        if: github.event_name == 'pull_request'
+        env:
+          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+        with:
+          result-encoding: string
+          script: |
+            const output =
+      
+            <details><summary>Show Plan</summary>
+
+            \`\`\`\n
+            ${process.env.PLAN}
+            \`\`\`
+
+            </details>
+
+            *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+          
+    # - name: Terraform Plan Merged 
+    #   id: plan-merged 
+    #   if: github.event.pull_request.merged == true
+    #   run: terraform plan -input=false -no-color
+
+
+    # - name: Terraform Plan Status
+    #   if: steps.plan.outcome == 'failure'
+    #   run: exit 1   

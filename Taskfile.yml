@@ -121,8 +121,23 @@ tasks:
         -var "artifacts_bucket_name=${ARTIFACTS_BUCKET_NAME}" \
         -var "project_id=${GOOGLE_CLOUD_PROJECT_ID}" \
         -var "project_number=${GOOGLE_PROJECT_NUMBER}" \
+        -var "cloudflare_api_token=${CLOUDFLARE_API}" \
         -var "region=${GOOGLE_CLOUD_PROJECT_REGION}" \
         -var "docker_image_tag={{.DOCKER_IMAGE_TAG}}"
+
+  terraform-import:
+    dir: terraform
+    desc: Creates an execution plan, which lets you preview the changes that Terraform plans to make to your infrastructure.
+    cmds:
+      - |
+        terraform plan \
+        -var "artifacts_bucket_name=${ARTIFACTS_BUCKET_NAME}" \
+        -var "project_id=${GOOGLE_CLOUD_PROJECT_ID}" \
+        -var "project_number=${GOOGLE_PROJECT_NUMBER}" \
+        -var "cloudflare_api_token=${CLOUDFLARE_API}" \
+        -var "region=${GOOGLE_CLOUD_PROJECT_REGION}" \
+        -var "docker_image_tag={{.DOCKER_IMAGE_TAG}}" \
+        -generate-config-out=generated.tf
 
   terraform-apply:
     dir: terraform
