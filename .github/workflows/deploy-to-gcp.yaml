@@ -10,8 +10,8 @@ permissions:
   id-token: write
 
 jobs:
-  terraform:
-    name: Terraform
+  deploy-xplorers-api:
+    name: Deploy Xplorers API to GCP
     runs-on: ubuntu-latest
 
     defaults:
