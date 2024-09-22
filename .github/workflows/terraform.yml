@@ -53,7 +53,7 @@ jobs:
       - name: Terraform Plan
         id: plan
         if: github.event_name == 'pull_request'
-        run: task terrafrom-plan
+        run: task terraform-plan
         continue-on-error: true
 
       - name: Update Pull Request
