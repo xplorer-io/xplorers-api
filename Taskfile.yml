@@ -129,8 +129,8 @@ tasks:
     desc: Apply the planned changes to the target infrastructure
     cmds:
       - defer: { task: clean }
-      - task: switch-to-terraform-workspace
       - task: terraform-init
+      - task: switch-to-terraform-workspace
       - task: package
       - task: build-xplorers-backend-image
       - |
