@@ -31,8 +31,9 @@ jobs:
           version: 9
       - name: Install dependencies
         run: pnpm install
-      - name: Setup go-task/task
-        uses: lagren/setup-task@v1
+      - name: Setup go-task / task / taskfile
+        uses: rnorton5432/setup-task@v1
+            
             
       - uses: 'google-github-actions/auth@v2'
         with:
