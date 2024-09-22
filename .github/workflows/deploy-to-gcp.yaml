@@ -39,9 +39,6 @@ jobs:
       run: |
         sudo snap install task --classic
 
-    - name: Terraform Plan
-      run: task terraform-plan
-
     - name: Terraform Apply
       # if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
       run: task terraform-apply
