@@ -54,8 +54,7 @@ jobs:
         id: init
         if: github.event_name == 'pull_request'
         run: task terraform-init
-        
-      terraform-init
+
       - name: Terraform Plan
         id: plan
         if: github.event_name == 'pull_request'
