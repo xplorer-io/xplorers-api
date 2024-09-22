@@ -50,11 +50,16 @@ jobs:
     # Checks that all Terraform configuration files adhere to a canonical format
       
       # Generates an execution plan for Terraform
+      - name: Terraform Init
+        id: init
+        if: github.event_name == 'pull_request'
+        run: task terraform-init
+        
+      terraform-init
       - name: Terraform Plan
         id: plan
         if: github.event_name == 'pull_request'
         run: task terraform-plan
-        continue-on-error: true
 
       - name: Update Pull Request
         uses: actions/github-script@v6
