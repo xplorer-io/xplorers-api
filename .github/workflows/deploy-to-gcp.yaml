@@ -30,7 +30,7 @@ jobs:
       uses: google-github-actions/auth@v2.0.0
       with:
         workload_identity_provider: ${{ secrets.GOOGLE_CLOUD_WORKLOAD_IDENTITY_PROVIDER }}
-        service_account: ${{ secrets.GOOGLE_CLOUD_WORKLOAD_IDP_SERVICE_ACCOUNT }}
+        # service_account: ${{ secrets.GOOGLE_CLOUD_WORKLOAD_IDP_SERVICE_ACCOUNT }}
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
