@@ -1,19 +1,5 @@
 import { WebClient, ErrorCode } from "@slack/web-api";
-
-
-interface FetchSlackUserParams {
-    userId?: string;
-    email?: string;
-    userName?: string;
-}
-
-interface SlackUserProfile {
-    id?: string;
-    first_name?: string;
-    last_name?: string;
-    title?: string;
-    email?: string;
-}
+import { FetchSlackUserParams, SlackUserProfile } from "../models/slackUserInterface";
 
 export async function fetchSlackUser({
     userId,

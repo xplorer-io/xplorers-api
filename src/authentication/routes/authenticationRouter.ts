@@ -1,6 +1,6 @@
 import express from "express";
-import { getSlackUserDetail } from "../controllers/fetchSlackUserCtrl";
-import { checkSlackUserStatus } from "../controllers/fetchSlackUserStatusCtrl";
+import { getSlackUserDetail } from "../controllers/fetchSlackUser";
+import { checkSlackUserStatus } from "../controllers/fetchSlackUserStatus";
 
 
 const router = express.Router();
