@@ -35,6 +35,14 @@ jobs:
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
 
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 9
+
+    - name: Install packages and dependencies
+      run: pnpm install
+
     - name: Install taskfile
       run: |
         sudo snap install task --classic
