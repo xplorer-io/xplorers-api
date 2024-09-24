@@ -40,9 +40,6 @@ jobs:
       with:
         version: 9
 
-    - name: Install packages and dependencies
-      run: pnpm install
-
     - name: Install taskfile
       run: |
         sudo snap install task --classic
