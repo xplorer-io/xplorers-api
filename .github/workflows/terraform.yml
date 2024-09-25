@@ -50,42 +50,42 @@
     # Checks that all Terraform configuration files adhere to a canonical format
       
       # Generates an execution plan for Terraform
-      - name: Terraform Init
-        id: init
-        if: github.event_name == 'pull_request'
-        run: task terraform-init
+      # - name: Terraform Init
+      #   id: init
+      #   if: github.event_name == 'pull_request'
+      #   run: task terraform-init
 
-      - name: Terraform Plan
-        id: plan
-        if: github.event_name == 'pull_request'
-        run: task terraform-plan
+      # - name: Terraform Plan
+      #   id: plan
+      #   if: github.event_name == 'pull_request'
+      #   run: task terraform-plan
 
-      - name: Update Pull Request
-        uses: actions/github-script@v6
-        if: github.event_name == 'pull_request'
-        env:
-          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
-        with:
-          result-encoding: string
-          script: |
-            const output =
+      # - name: Update Pull Request
+      #   uses: actions/github-script@v6
+      #   if: github.event_name == 'pull_request'
+      #   env:
+      #     PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+      #   with:
+      #     result-encoding: string
+      #     script: |
+      #       const output =
       
-            <details><summary>Show Plan</summary>
+      #       <details><summary>Show Plan</summary>
 
-            \`\`\`\n
-            ${process.env.PLAN}
-            \`\`\`
+      #       \`\`\`\n
+      #       ${process.env.PLAN}
+      #       \`\`\`
 
-            </details>
+      #       </details>
 
-            *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+      #       *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
 
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: output
-            })
+      #       github.rest.issues.createComment({
+      #         issue_number: context.issue.number,
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         body: output
+      #       })
           
     # - name: Terraform Plan Merged 
     #   id: plan-merged 
