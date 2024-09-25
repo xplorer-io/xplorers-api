@@ -144,6 +144,7 @@ tasks:
   terraform-plan-destroy:
     dir: terraform
     cmds:
+      - task: switch-to-terraform-workspace
       - |
         terraform plan -destroy \
         -var "artifacts_bucket_name=${ARTIFACTS_BUCKET_NAME}" \
@@ -156,6 +157,7 @@ tasks:
     dir: terraform
     desc: Delete all resources created by terraform
     cmds:
+      - task: switch-to-terraform-workspace
       - |
         terraform destroy -auto-approve \
         -var "artifacts_bucket_name=${ARTIFACTS_BUCKET_NAME}" \
