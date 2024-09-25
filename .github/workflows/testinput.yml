@@ -1,24 +1,17 @@
-name: Mixed inputs
-
+name: Basic Workflow Dispatch Example
 on:
   workflow_dispatch:
     inputs:
-      foo:
-        description: bar
+      environment:
+        description: 'The environment to deploy to'
         required: true
-        type: environment
-      bar:
-        description: foo
-        required: true
-        default: test-samrat
-        type: choice
-        options:
-          - samrat
-          - not-samrat
-
+        default: 'production'
 jobs:
-  greet:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "DONE foo has ${{ github.event.inputs.foo}} and bar has ${{ github.event.inputs.bar }}"
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Deploy
+        run: echo "Deploying to ${{ github.event.inputs.environment }} environment"
 
