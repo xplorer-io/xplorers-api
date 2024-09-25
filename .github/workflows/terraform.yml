@@ -1,50 +1,50 @@
-name: 'Terraform'
-on:
-  push:
-    paths:
-      - '**.tf'
-      - '**.hcl'
-      - '**.tpl'
-  pull_request:
-    paths:
-      - '**.tf'
-      - '**.hcl'
-      - '**.tpl'
+# name: 'Terraform'
+# on:
+#   push:
+#     paths:
+#       - '**.tf'
+#       - '**.hcl'
+#       - '**.tpl'
+#   pull_request:
+#     paths:
+#       - '**.tf'
+#       - '**.hcl'
+#       - '**.tpl'
 
-permissions:
-  contents: read
+# permissions:
+#   contents: read
 
-jobs:
-  terraform:
-    name: 'Terraform'
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
+# jobs:
+#   terraform:
+#     name: 'Terraform'
+#     runs-on: ubuntu-latest
+#     defaults:
+#       run:
+#         shell: bash
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@master
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-      - name: Install dependencies
-        run: pnpm install
-      - name: Setup go-task / task / taskfile
-        uses: rnorton5432/setup-task@v1
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@master
+#       - name: Setup pnpm
+#         uses: pnpm/action-setup@v4
+#         with:
+#           version: 9
+#       - name: Install dependencies
+#         run: pnpm install
+#       - name: Setup go-task / task / taskfile
+#         uses: rnorton5432/setup-task@v1
             
             
-      - uses: 'google-github-actions/auth@v2'
-        with:
-          credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
+#       - uses: 'google-github-actions/auth@v2'
+#         with:
+#           credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
       
 
-    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
-      - name: Install Terraform  
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: "1.1.7"
+#     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+#       - name: Install Terraform  
+#         uses: hashicorp/setup-terraform@v3
+#         with:
+#           terraform_version: "1.1.7"
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     # Checks that all Terraform configuration files adhere to a canonical format
