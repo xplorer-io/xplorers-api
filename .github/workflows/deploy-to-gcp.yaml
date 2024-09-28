@@ -48,7 +48,9 @@ jobs:
 
       - name: Terraform Plan
         if: github.event_name == 'pull_request'
+        id: plan
         run: task terraform-plan
+
       - name: Update Pull Request
         uses: actions/github-script@v6
         if: github.event_name == 'pull_request'
