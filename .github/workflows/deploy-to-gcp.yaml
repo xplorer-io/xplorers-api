@@ -1,7 +1,5 @@
 name: Deploy Xplorers API to GCP
-
-- on: push
-    
+on: push
 
 permissions:
   contents: read
