@@ -119,7 +119,6 @@ tasks:
     dir: terraform
     desc: Creates an execution plan, which lets you preview the changes that Terraform plans to make to your infrastructure.
     cmds:
-      - task: teraform validate -no-color
       - task: terraform-init
       - task: switch-to-terraform-workspace
       - task: package
