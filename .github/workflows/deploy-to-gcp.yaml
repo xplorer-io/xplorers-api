@@ -1,16 +1,7 @@
 name: Deploy Xplorers API to GCP
 
-on:
-  push:
-    paths:
-      - "**.tf"
-      - "**.hcl"
-      - "**.tpl"
-  pull_request:
-    paths:
-      - "**.tf"
-      - "**.hcl"
-      - "**.tpl"
+- on: push
+    
 
 permissions:
   contents: read
