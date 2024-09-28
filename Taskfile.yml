@@ -108,12 +108,7 @@ tasks:
         terraform init \
         -backend-config="bucket=${ARTIFACTS_BUCKET_NAME}" \
         -backend-config="prefix=${ARTIFACTS_BUCKET_TERRAFORM_PREFIX}"
-      - terraform validate -no-color \
-        -var "artifacts_bucket_name=${ARTIFACTS_BUCKET_NAME}" \
-        -var "project_id=${GOOGLE_CLOUD_PROJECT_ID}" \
-        -var "project_number=${GOOGLE_PROJECT_NUMBER}" \
-        -var "region=${GOOGLE_CLOUD_PROJECT_REGION}" \
-        -var "docker_image_tag={{.DOCKER_IMAGE_TAG}}"
+      - terraform validate -no-color
 
   terraform-plan:
     dir: terraform
