@@ -108,16 +108,24 @@ tasks:
         terraform init \
         -backend-config="bucket=${ARTIFACTS_BUCKET_NAME}" \
         -backend-config="prefix=${ARTIFACTS_BUCKET_TERRAFORM_PREFIX}"
+      - terraform validate -no-color \
+        -var "artifacts_bucket_name=${ARTIFACTS_BUCKET_NAME}" \
+        -var "project_id=${GOOGLE_CLOUD_PROJECT_ID}" \
+        -var "project_number=${GOOGLE_PROJECT_NUMBER}" \
+        -var "region=${GOOGLE_CLOUD_PROJECT_REGION}" \
+        -var "docker_image_tag={{.DOCKER_IMAGE_TAG}}"
 
   terraform-plan:
     dir: terraform
     desc: Creates an execution plan, which lets you preview the changes that Terraform plans to make to your infrastructure.
     cmds:
+      - task: teraform validate -no-color
       - task: terraform-init
       - task: switch-to-terraform-workspace
       - task: package
       - |
         terraform plan \
+        -no-color \
         -var "artifacts_bucket_name=${ARTIFACTS_BUCKET_NAME}" \
         -var "project_id=${GOOGLE_CLOUD_PROJECT_ID}" \
         -var "project_number=${GOOGLE_PROJECT_NUMBER}" \
@@ -134,7 +142,7 @@ tasks:
       - task: package
       - task: build-xplorers-backend-image
       - |
-        terraform apply -auto-approve \
+        terraform apply -no-color -auto-approve \
         -var "artifacts_bucket_name=${ARTIFACTS_BUCKET_NAME}" \
         -var "project_id=${GOOGLE_CLOUD_PROJECT_ID}" \
         -var "project_number=${GOOGLE_PROJECT_NUMBER}" \

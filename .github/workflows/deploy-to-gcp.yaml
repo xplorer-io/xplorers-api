@@ -1,6 +1,16 @@
 name: Deploy Xplorers API to GCP
 
-on: push
+on:
+  push:
+    paths:
+      - "**.tf"
+      - "**.hcl"
+      - "**.tpl"
+  pull_request:
+    paths:
+      - "**.tf"
+      - "**.hcl"
+      - "**.tpl"
 
 permissions:
   contents: read
@@ -37,7 +47,34 @@ jobs:
           sudo snap install task --classic
 
       - name: Terraform Plan
+        if: github.event_name == 'pull_request'
         run: task terraform-plan
+      - name: Update Pull Request
+        uses: actions/github-script@v6
+        if: github.event_name == 'pull_request'
+        env:
+          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+        with:
+          result-encoding: string
+          script: |
+            const output =
+
+            <details><summary>Show Plan</summary>
+
+            \`\`\`\n
+            ${process.env.PLAN}
+            \`\`\`
+
+            </details>
+
+            *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
