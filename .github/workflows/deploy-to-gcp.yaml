@@ -1,9 +1,6 @@
 name: Deploy Xplorers API to GCP
 
 on: push
-  # push:
-  #   branches: [ "main" ]
-  # pull_request:
 
 permissions:
   contents: read
@@ -19,28 +16,29 @@ jobs:
         shell: bash
 
     steps:
-    # Checkout the repository to the GitHub Actions runner
-    - name: Checkout
-      uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - id: auth
-      uses: google-github-actions/auth@v2.0.0
-      with:
-        workload_identity_provider: ${{ secrets.GOOGLE_CLOUD_WORKLOAD_IDENTITY_PROVIDER }}
-        # service_account: ${{ secrets.GOOGLE_CLOUD_WORKLOAD_IDP_SERVICE_ACCOUNT }}
+      - id: auth
+        uses: google-github-actions/auth@v2.0.0
+        with:
+          workload_identity_provider: ${{ secrets.GOOGLE_CLOUD_WORKLOAD_IDENTITY_PROVIDER }}
 
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
 
-    - name: Setup pnpm
-      uses: pnpm/action-setup@v4
-      with:
-        version: 9
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
 
-    - name: Install taskfile
-      run: |
-        sudo snap install task --classic
+      - name: Install taskfile
+        run: |
+          sudo snap install task --classic
 
-    - name: Terraform Apply
-      # if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
-      run: task terraform-apply
+      - name: Terraform Plan
+        run: task terraform-plan
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
+        run: task terraform-apply
