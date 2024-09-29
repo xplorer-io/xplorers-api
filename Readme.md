@@ -108,6 +108,7 @@ To install and deploy a feature branch of the Xplorers API, follow these steps:
     ```
 
 5. **Run terraform plan**:
+
    This command creates an execution plan. By default, it shows what actions Terraform will take to change the infrastructure. This command does not make any changes to the infrastructure and is safe to run to see what changes will be made.
 
     ```sh
@@ -115,6 +116,7 @@ To install and deploy a feature branch of the Xplorers API, follow these steps:
     ```
 
 6. **Run terraform apply**:
+
    This command applies the changes required to reach the desired state of the configuration. This command will create the resources defined in the Terraform configuration.
     ```sh
     task terraform-apply

@@ -27,7 +27,7 @@ tasks:
   compile:
     desc: Compile typescript files
     cmds:
-      - pnpm run build 
+      - pnpm run build
 
   clean:
     desc: Clean artifacts and dependencies
@@ -61,7 +61,7 @@ tasks:
     cmds:
       - |
         GREEN='\033[0;32m'
-        if [ "${TERRAFORM_WORKSPACE}" == "prod" ]; then
+        if [ "${TERRAFORM_WORKSPACE}" == "prod" ] && [ -z "${GITHUB_REPOSITORY}" ]; then
           RED='\033[0;31m'
           NC='\033[0m' # No Color
           echo -e "${RED}###############################################################"
@@ -113,8 +113,8 @@ tasks:
     dir: terraform
     desc: Creates an execution plan, which lets you preview the changes that Terraform plans to make to your infrastructure.
     cmds:
-      - task: switch-to-terraform-workspace
       - task: terraform-init
+      - task: switch-to-terraform-workspace
       - task: package
       - |
         terraform plan \
@@ -129,8 +129,8 @@ tasks:
     desc: Apply the planned changes to the target infrastructure
     cmds:
       - defer: { task: clean }
-      - task: switch-to-terraform-workspace
       - task: terraform-init
+      - task: switch-to-terraform-workspace
       - task: package
       - task: build-xplorers-backend-image
       - |
@@ -144,6 +144,7 @@ tasks:
   terraform-plan-destroy:
     dir: terraform
     cmds:
+      - task: switch-to-terraform-workspace
       - |
         terraform plan -destroy \
         -var "artifacts_bucket_name=${ARTIFACTS_BUCKET_NAME}" \
@@ -156,6 +157,7 @@ tasks:
     dir: terraform
     desc: Delete all resources created by terraform
     cmds:
+      - task: switch-to-terraform-workspace
       - |
         terraform destroy -auto-approve \
         -var "artifacts_bucket_name=${ARTIFACTS_BUCKET_NAME}" \
