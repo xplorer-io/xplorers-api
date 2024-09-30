@@ -35,7 +35,7 @@ jobs:
       - name: Check for Terraform changes
         id: check_changes
         run: |
-          if git diff --name-only HEAD~1 | grep -q '^terraform/.*\.tf$'; then
+          if git diff --name-only -r HEAD^1 HEAD | grep -q '^terraform/.*\.tf$'; then
             echo "backend_api_hanges=true" >> $GITHUB_ENV
           else
             echo "backend_api_changes=false" >> $GITHUB_ENV

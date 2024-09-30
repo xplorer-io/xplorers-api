@@ -84,21 +84,21 @@ tasks:
         terraform workspace select ${TERRAFORM_WORKSPACE}
         echo -e "Successfully switched to terraform workspace: ${GREEN}${TERRAFORM_WORKSPACE}${NC}"
 
-  terraform-providers-lock:
+  backend-providers-lock:
     dir: terraform
     desc: Lock terraform providers for all platforms
     cmds:
       - |
         terraform providers lock -platform=windows_amd64 -platform=darwin_amd64 -platform=linux_amd64
 
-  terraform-fmt:
+  backend-fmt:
     dir: terraform
     desc: Format terraform files
     cmds:
       - |
         terraform fmt
 
-  terraform-init:
+  backend-init:
     dir: terraform
     desc: Initialize terraform backend, providers, plugins and modules
     deps:
@@ -109,7 +109,7 @@ tasks:
         -backend-config="bucket=${ARTIFACTS_BUCKET_NAME}" \
         -backend-config="prefix=${ARTIFACTS_BUCKET_TERRAFORM_PREFIX}"
 
-  terraform-plan:
+  backend-plan:
     dir: terraform
     desc: Creates an execution plan, which lets you preview the changes that Terraform plans to make to your infrastructure.
     cmds:
@@ -124,7 +124,7 @@ tasks:
         -var "region=${GOOGLE_CLOUD_PROJECT_REGION}" \
         -var "docker_image_tag={{.DOCKER_IMAGE_TAG}}"
 
-  terraform-apply:
+  backend-apply:
     dir: terraform
     desc: Apply the planned changes to the target infrastructure
     cmds:
@@ -141,7 +141,7 @@ tasks:
         -var "region=${GOOGLE_CLOUD_PROJECT_REGION}" \
         -var "docker_image_tag={{.DOCKER_IMAGE_TAG}}"
 
-  terraform-plan-destroy:
+  backend-plan-destroy:
     dir: terraform
     cmds:
       - task: switch-to-terraform-workspace
@@ -153,7 +153,7 @@ tasks:
         -var "region=${GOOGLE_CLOUD_PROJECT_REGION}" \
         -var "docker_image_tag={{.DOCKER_IMAGE_TAG}}"
 
-  terraform-destroy:
+  backend-destroy:
     dir: terraform
     desc: Delete all resources created by terraform
     cmds:
@@ -166,7 +166,7 @@ tasks:
         -var "region=${GOOGLE_CLOUD_PROJECT_REGION}" \
         -var "docker_image_tag={{.DOCKER_IMAGE_TAG}}"
 
-  terraform-upgrade-providers:
+  backend-upgrade-providers:
     dir: terraform
     desc: Upgrade terraform providers
     cmds:
