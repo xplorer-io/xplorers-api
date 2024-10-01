@@ -41,7 +41,7 @@ jobs:
           sudo snap install task --classic
 
       - name: Terraform Plan
-        if: github.event_name == 'push' || github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request'
         id: plan
         run: task terraform-plan
 
