@@ -50,8 +50,7 @@ jobs:
         with:
           result-encoding: string
           script: |
-            const output =
-
+            const output = `#### TASK Terraform Plan 📖\`${{ steps.plan.outcome }}\`
             <details><summary>Show Plan</summary>
 
             \`\`\`\n
