@@ -7,7 +7,6 @@ permissions:
   id-token: write
   contents: write
   pull-requests: write
-  repository-projects: write
 
 jobs:
   deploy-xplorers-api:
