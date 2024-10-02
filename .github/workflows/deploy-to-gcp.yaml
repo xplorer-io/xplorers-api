@@ -2,48 +2,37 @@ name: Deploy Xplorers API to GCP
 on: 
   push:
   pull_request:
-
 permissions:
   id-token: write
   contents: write
   pull-requests: write
-
 jobs:
   deploy-xplorers-api:
     name: Deploy Xplorers API to GCP
     runs-on: ubuntu-latest
-
-
     defaults:
       run:
         shell: bash
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - id: auth
         uses: google-github-actions/auth@v2.0.0
         with:
           workload_identity_provider: ${{ secrets.GOOGLE_CLOUD_WORKLOAD_IDENTITY_PROVIDER }}
-
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
-
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 9
-
       - name: Install taskfile
         run: |
           sudo snap install task --classic
-
       - name: Terraform Plan
         if: github.event_name == 'pull_request'
         id: plan
         run: task terraform-plan
-
       - name: Update Pull Request
         uses: actions/github-script@v6
         if: github.event_name == 'pull_request'
