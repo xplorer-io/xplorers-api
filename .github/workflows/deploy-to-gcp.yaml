@@ -2,6 +2,8 @@ name: Deploy Xplorers API to GCP
 on: 
   push:
   pull_request:
+    types:
+        - ready_for_review
 permissions:
   id-token: write
   contents: write
@@ -56,7 +58,3 @@ jobs:
               repo: context.repo.repo,
               body: output
             })
-
-      - name: Terraform Apply
-        if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
-        run: task terraform-apply
