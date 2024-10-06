@@ -1,44 +1,60 @@
 name: Deploy Xplorers API to GCP
-
-on: push
-
+on: 
+  push:
+  pull_request:
+    types:
+        - ready_for_review
 permissions:
-  contents: read
   id-token: write
-
+  contents: write
+  pull-requests: write
 jobs:
   deploy-xplorers-api:
     name: Deploy Xplorers API to GCP
     runs-on: ubuntu-latest
-
     defaults:
       run:
         shell: bash
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - id: auth
         uses: google-github-actions/auth@v2.0.0
         with:
           workload_identity_provider: ${{ secrets.GOOGLE_CLOUD_WORKLOAD_IDENTITY_PROVIDER }}
-
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
-
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 9
-
       - name: Install taskfile
         run: |
           sudo snap install task --classic
-
       - name: Terraform Plan
+        if: github.event_name == 'pull_request'
+        id: plan
         run: task terraform-plan
-
-      - name: Terraform Apply
-        if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
-        run: task terraform-apply
+      - name: Update Pull Request
+        uses: actions/github-script@v6
+        if: github.event_name == 'pull_request'
+        env:
+          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+        with:
+          result-encoding: string
+          script: |
+            const output = `#### TASK Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+            <details><summary>Show Plan</summary>
+            \n
+            \`\`\`\n
+            ${process.env.PLAN}
+            \`\`\`
+            \n
+            </details>
+            *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
