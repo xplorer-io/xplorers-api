@@ -1,0 +1,41 @@
+name: Terraform Workflow
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Terraform action to perform'
+        required: true
+        default: 'plan'
+        type: choice
+        options:
+          - plan
+          - apply
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - id: auth
+      uses: google-github-actions/auth@v2.0.0
+      with:
+        workload_identity_provider: ${{ secrets.GOOGLE_CLOUD_WORKLOAD_IDENTITY_PROVIDER }}
+    - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+    - name: Terraform Init
+      run: terraform init
+
+    - name: Terraform Plan
+      if: github.event.inputs.action == 'plan'
+      run: task terraform-plan
+
+    - name: Terraform Apply
+      if: github.event.inputs.action == 'apply'
+      run: task terraform-apply
