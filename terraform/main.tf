@@ -88,3 +88,78 @@ output "cloud_run_url" {
 output "api_gateway_url" {
   value = google_api_gateway_gateway.xplorers_api_gateway.default_hostname
 }
+
+resource "cloudflare_record" "xplorers_record_CNAME_1" {
+  name    = "www"
+  proxied = false
+  ttl     = 1
+  type    = "CNAME"
+  content   = "xplorers-website.vercel.app"
+  zone_id = var.xplorers_domain
+}
+
+resource "cloudflare_record" "xplorers_record_CNAME-2" {
+  name    = "xplorers.tech"
+  proxied = false
+  ttl     = 1
+  type    = "CNAME"
+  content   = "xplorers-website.vercel.app"
+  zone_id = var.xplorers_domain
+}
+
+resource "cloudflare_record" "xplorers_record_MX_3" {
+  content  = "route2.mx.cloudflare.net"
+  name     = "xplorers.tech"
+  priority = 11
+  proxied  = false
+  ttl      = 1
+  type     = "MX"
+  zone_id = var.xplorers_domain
+}
+
+resource "cloudflare_record" "xplorers_record_MX_1" {
+  content  = "route1.mx.cloudflare.net"
+  name     = "xplorers.tech"
+  priority = 71
+  proxied  = false
+  ttl      = 1
+  type     = "MX"
+  zone_id = var.xplorers_domain
+}
+
+resource "cloudflare_record" "xplorers_record_MX_2" {
+  content  = "route3.mx.cloudflare.net"
+  name     = "xplorers.tech"
+  priority = 37
+  proxied  = false
+  ttl      = 1
+  type     = "MX"
+  zone_id = var.xplorers_domain
+}
+ 
+resource "cloudflare_record" "xplorers_record_TXT_3" {
+  content = "\"v=DMARC1; p=none; rua=mailto:b1194f0bc1d140b395920bfdcc91ce2a@dmarc-reports.cloudflare.net\""
+  name    = "_dmarc"
+  proxied = false
+  ttl     = 1
+  type    = "TXT"
+  zone_id = var.xplorers_domain
+}
+
+resource "cloudflare_record" "xplorers_record_TXT_2" {
+  content = "\"v=spf1 include:_spf.mx.cloudflare.net ~all\""
+  name    = "xplorers.tech"
+  proxied = false
+  ttl     = 1
+  type    = "TXT"
+  zone_id = var.xplorers_domain
+}
+
+resource "cloudflare_record" "xplorers_record_TXT_1" {
+  content = "\"hcp-domain-verification=bd3cf9469e22b933c6ad349a8f97ad5c08ff4174e22c4aa911f75d9e261ee6e1\""
+  name    = "xplorers.tech"
+  proxied = false
+  ttl     = 1
+  type    = "TXT"
+  zone_id = var.xplorers_domain
+}
