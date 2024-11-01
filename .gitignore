@@ -134,3 +134,5 @@ dist
 # .tfstate files
 *.tfstate
 *.tfstate.*
+
+launch.json
